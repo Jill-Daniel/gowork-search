@@ -12,9 +12,9 @@ function Login({ onLogin }) {
     setMessage('Logging in...');
     setMessageType('');
 
-    try {
-      const formData = { email, password }; // ✅ Define formData
+    const formData = { email, password }; // ✅ Define formData here before using it
 
+    try {
       const res = await axios.post(
         'https://gowork-backend.onrender.com/api/auth/login',
         formData

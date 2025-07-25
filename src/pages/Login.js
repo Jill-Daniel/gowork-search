@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import API_BASE from "../utils/api";
 
 function Login({ onLogin }) {
   const [email, setEmail] = useState('');
@@ -14,25 +13,23 @@ function Login({ onLogin }) {
     setMessageType('');
 
     try {
-      
+      // ✅ Define formData before using it
+      const formData = { email, password };
 
-// ...
+      const res = await axios.post(
+        'https://gowork-backend.onrender.com/api/auth/login',
+        formData
+      );
 
-// instead of localhost:
-const res = await axios.post('https://gowork-backend.onrender.com/api/auth/register', formData);
-
-
-      // Save auth info
+      // Save token and worker info
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('workerName', res.data.worker.name);
 
       setMessageType('success');
       setMessage(res.data.message || 'Login successful');
 
-      // Trigger parent login action if passed
       if (onLogin) onLogin(res.data.worker);
 
-      // Optional: Redirect or clear form after delay
     } catch (error) {
       setMessageType('error');
       setMessage(error.response?.data?.error || 'Login failed');
